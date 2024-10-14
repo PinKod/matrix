@@ -25,10 +25,7 @@ int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
                 int ret_code_B = s21_get(B, i, j, &value_B);
                 if(ret_code_A == OK && ret_code_B == OK) {
                     res_i_j_sum += value_A * value_B;
-                    if (-DBL_MIN <= res_i_j_sum && res_i_j_sum <= DBL_MAX) {
-
-                    }
-                    else {
+                    if (-DBL_MIN < res_i_j_sum || res_i_j_sum > DBL_MAX) {
                         ret_code = CALC_ERROR;
                     }
                 }
@@ -36,9 +33,8 @@ int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
                     ret_code = ERROR_OR_IN_C_M;
                 }
             }
-
             if(ret_code == OK) ret_code = s21_set(result, i, j, res_i_j_sum);
         }
     }
-    return ret_code;
+
 }

@@ -10,6 +10,7 @@
 int s21_mult_number(matrix_t *A, double number, matrix_t *result) {
     if (A == NULL) return ERROR_OR_IN_C_M;
     if (A->matrix == NULL) return ERROR_OR_IN_C_M;
+    if (A->rows <= 0 || A->columns <= 0) return ERROR_OR_IN_C_M;
 
     int ret_code = s21_create_matrix(A->rows, A->columns, result);
 
