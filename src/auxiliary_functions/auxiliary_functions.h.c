@@ -92,3 +92,47 @@ int s21_resize(matrix_t *matrix, int rows, int cols) {
     }
     return ret_code;
 }
+
+int s21_minor(matrix_t *matrix, int row, int col, double *value) {
+    if(matrix->rows > 2) {
+        matrix_t tmp_matrix;
+        int ret_code = s21_create_matrix(row, col, &tmp_matrix);    //create matrix functions gets absolute amount of rows and columns(starts with 1,2,3...)
+        int new_i = 0;
+        int new_j = 0;
+        for(int i = 0; ret_code == OK && i < matrix->rows; i++) {
+            for(int j = 0; ret_code == OK && j < matrix->columns; j++) {
+                if(i != row && j != col) {
+                    double value_matrix;
+                    ret_code = s21_get(matrix, i, j, &value_matrix);
+                    if(ret_code == OK) {
+                        ret_code = s21_set(&tmp_matrix, i, j, value_matrix);
+                    }
+                }
+            }
+        }
+        ret_code = s21_minor(&tmp_matrix, 0, 0, value);
+        free(tmp_matrix);
+    }
+
+    long double det;
+    long double v1;
+    long double v2;
+    long double v3;
+    long double v4;
+    int ret_code_1 = s21_get(matrix, 0, 0, &v1);
+    int ret_code_2 = s21_get(matrix, 0, 1, &v2);
+    int ret_code_3 = s21_get(matrix, 1, 0, &v3);
+    int ret_code_4 = s21_get(matrix, 1, 1, &v4);
+
+    if(ret_code_1 + ret_code_2 + ret_code_3 + ret_code_4 == 0) {
+        det = v1 * v4 - v2 * v3;
+        if (-DBL_MIN <= det && det <= DBL_MAX) {
+            *value = det;
+        }
+        else {
+            ret_code = CALC_ERROR;
+        }
+    }
+
+    return ret_code;
+}

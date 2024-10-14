@@ -14,4 +14,6 @@ int s21_set_val(matrix_t *matrix, double value);
 
 int s21_resize(matrix_t *matrix, int rows, int cols);
 
+int s21_minor(matrix_t *matrix, int row, int col, double *value);
+
 #endif //MATRIX_AUXILIARY_FUNCTIONS_H

@@ -15,6 +15,20 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
 
     int ret_code = s21_create_matrix(A->rows, A->columns, result);
 
+    for(int i = 0; ret_code == OK && i < A->rows; i++) {
+        for(int j = 0; ret_code == OK && j < A->columns; j++) {
+            double value_A;
+            ret_code = s21_get(A, i, j, &value_A);
+            if(ret_code == OK) {
+                double value_minor;
+                ret_code = s21_minor(A, i, j, &value_minor);
+                if(ret_code == OK) {
+                    ret_code = s21_set(result, i, j, value_minor);
+                }
+            }
+        }
+    }
+
 
 
     return ret_code;
